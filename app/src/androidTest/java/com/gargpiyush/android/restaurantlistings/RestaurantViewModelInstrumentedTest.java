@@ -2,57 +2,40 @@ package com.gargpiyush.android.restaurantlistings;
 
 import android.arch.lifecycle.MutableLiveData;
 
-import com.gargpiyush.android.restaurantlistings.adapter.ListAdapter;
 import com.gargpiyush.android.restaurantlistings.model.RestaurantInfo;
 import com.gargpiyush.android.restaurantlistings.model.RestaurantResult;
 import com.gargpiyush.android.restaurantlistings.repository.RestaurantRepo;
-import com.gargpiyush.android.restaurantlistings.view.RestaurantDetailsFragment;
 import com.gargpiyush.android.restaurantlistings.viewModel.RestaurantViewModel;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-
-import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+import static org.junit.Assert.*;
 
 /**
  * Created by Piyush Garg
- * on 7/22/2019
- * at 18:02.
+ * on 7/23/2019
+ * at 07:32.
  */
 
-public class RestaurantViewModelTest {
+public class RestaurantViewModelInstrumentedTest {
 
-    @Mock
-    private RestaurantRepo restaurantRepo;
 
-    @Mock
-    private ListAdapter listAdapter;
+    private RestaurantRepo restaurantRepo = new RestaurantRepo();
 
-    @Mock
-    private RestaurantDetailsFragment restaurantDetailsFragment;
-
-    private RestaurantViewModel restaurantViewModel;
+    private RestaurantViewModel restaurantViewModel = new RestaurantViewModel(restaurantRepo);
     private ArrayList<RestaurantResult> searchResults = new ArrayList<>();
     private RestaurantInfo restaurantInfo;
 
-    @Mock
     private MutableLiveData<ArrayList<RestaurantResult>> restaurantLiveData
             = new MutableLiveData<>();
 
-    @Mock
     private MutableLiveData<RestaurantInfo> restaurantInfoMutableLiveData = new MutableLiveData<>();
 
     @Before
     public void setUp() throws Exception{
-        MockitoAnnotations.initMocks(this);
-
-        restaurantViewModel = Mockito.spy(new RestaurantViewModel(restaurantRepo));
 
         searchResults.add(new RestaurantResult("10","ABC",
                 "Lunch","url", "closed",
@@ -66,31 +49,19 @@ public class RestaurantViewModelTest {
         restaurantInfo = new RestaurantInfo("+19876543210",
                 null,"food", "ABC", 4.5,
                 null, "url");
+        restaurantLiveData.postValue(searchResults);
+        restaurantInfoMutableLiveData.postValue(restaurantInfo);
     }
 
     @Test
-    public void test_getRestaurantResultDataObservable(){
-        String lat = "37.422740";
-        String lng = "-122.139956";
-        String offset = "0";
-        String limit = "20";
+    public void test_handleRestaurantListResponse_Success() {
         restaurantViewModel.getRestaurantResultDataObservable();
-        Mockito.verify(restaurantRepo, Mockito.times(1))
-                .getRestaurantList(lat, lng, offset, limit);
+        assertEquals(searchResults,restaurantLiveData.getValue());
     }
 
     @Test
-    public void test_getRestaurantInfo_NoQuery(){
-        String query = null;
-        restaurantViewModel.getRestaurantInfo(query);
-        Mockito.verify(restaurantRepo,Mockito.never()).getRestaurantInfo(query);
-    }
-
-    @Test
-    public void test_getRestaurantInfo(){
-        String query = "30";
-        restaurantViewModel.getRestaurantInfo(query);
-        Mockito.verify(restaurantRepo,Mockito.times(1))
-                .getRestaurantInfo(query);
+    public void test_handleRestaurantDetails_success(){
+        restaurantViewModel.getRestaurantInfo("30");
+        assertEquals(restaurantInfo,restaurantInfoMutableLiveData.getValue());
     }
 }
