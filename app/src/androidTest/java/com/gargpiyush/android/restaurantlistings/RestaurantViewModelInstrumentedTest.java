@@ -35,7 +35,7 @@ public class RestaurantViewModelInstrumentedTest {
     private MutableLiveData<RestaurantInfo> restaurantInfoMutableLiveData = new MutableLiveData<>();
 
     @Before
-    public void setUp() throws Exception{
+    public void setUp() {
 
         searchResults.add(new RestaurantResult("10","ABC",
                 "Lunch","url", "closed",
@@ -49,18 +49,37 @@ public class RestaurantViewModelInstrumentedTest {
         restaurantInfo = new RestaurantInfo("+19876543210",
                 null,"food", "ABC", 4.5,
                 null, "url");
-        restaurantLiveData.postValue(searchResults);
-        restaurantInfoMutableLiveData.postValue(restaurantInfo);
     }
 
     @Test
-    public void test_handleRestaurantListResponse_Success() {
+    public void test_handleRestaurantListResponse_failure(){
+        restaurantViewModel.getRestaurantResultDataObservable();
+        assertNotEquals(searchResults,restaurantLiveData.getValue());
+    }
+
+    @Test
+    public void test_handleRestaurantListResponse_success() {
+        restaurantLiveData.postValue(searchResults);
         restaurantViewModel.getRestaurantResultDataObservable();
         assertEquals(searchResults,restaurantLiveData.getValue());
     }
 
     @Test
+    public void test_handleRestaurantListResponse_data(){
+        restaurantLiveData.postValue(searchResults);
+        restaurantViewModel.getRestaurantResultDataObservable();
+        assertEquals(restaurantLiveData.getValue().get(0).getRestaurantName(),"ABC");
+    }
+
+    @Test
+    public void test_handleRestaurantDetails_failure(){
+        restaurantViewModel.getRestaurantInfo("30");
+        assertNotEquals(restaurantInfo,restaurantInfoMutableLiveData.getValue());
+    }
+
+    @Test
     public void test_handleRestaurantDetails_success(){
+        restaurantInfoMutableLiveData.postValue(restaurantInfo);
         restaurantViewModel.getRestaurantInfo("30");
         assertEquals(restaurantInfo,restaurantInfoMutableLiveData.getValue());
     }

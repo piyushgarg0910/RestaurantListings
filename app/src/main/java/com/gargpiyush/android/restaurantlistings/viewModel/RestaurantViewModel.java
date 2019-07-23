@@ -27,6 +27,10 @@ public class RestaurantViewModel extends ViewModel {
         return restaurantRepo.getRestaurantList("37.422740","-122.139956","0","20");
     }
 
+    public LiveData<ArrayList<RestaurantResult>> getRestaurantResultDataObservable(String limit) {
+        return restaurantRepo.getRestaurantList("37.422740","-122.139956","0",limit);
+    }
+
     public LiveData<RestaurantInfo> getRestaurantInfo(String id){
         if (id != null)
             return restaurantRepo.getRestaurantInfo(id);
