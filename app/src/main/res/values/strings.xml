@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">RestaurantListings</string>
+    <string name="restaurant_logo">Restaurant Logo</string>
+    <string name="title">Restaurant Name</string>
+    <string name="cuisine">Cuisine</string>
+    <string name="status">Status</string>
+    <string name="toolbar_title">Discover</string>
+    <string name="pre_order_text">Pre-Order</string>
+    <string name="delivery_fee">Delivery Fee: </string>
+    <string name="phone_number">Phone Number</string>
+    <string name="address">Address</string>
+    <string name="tags">Tags</string>
+    <string name="ratings">Ratings</string>
+    <string name="positive">Yes</string>
+    <string name="negative">No</string>
+    <string name="close_application_message">Do you wish to close this application?</string>
+    <string name="close_application_title">Close Application!</string>
+</resources>
