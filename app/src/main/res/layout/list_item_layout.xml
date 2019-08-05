@@ -60,6 +60,14 @@
         android:gravity="end"
         android:id="@+id/restaurant_status"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:background="@color/colorBlack"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:id="@+id/favourite"/>
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"

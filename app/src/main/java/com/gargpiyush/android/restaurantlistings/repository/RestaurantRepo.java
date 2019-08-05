@@ -23,7 +23,7 @@ import retrofit2.Response;
 public class RestaurantRepo {
 
     private RestaurantResposne restaurantResposne = RestaurantApi.getRetrofitInstance()
-            .create(RestaurantResposne.class);;
+            .create(RestaurantResposne.class);
 
     public LiveData<ArrayList<RestaurantResult>> getRestaurantList(String lat, String lng,
                                                                    String offset, String limit){

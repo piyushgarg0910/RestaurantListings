@@ -10,9 +10,12 @@ import android.view.ViewGroup;
 
 import com.gargpiyush.android.restaurantlistings.R;
 import com.gargpiyush.android.restaurantlistings.model.RestaurantResult;
+import com.gargpiyush.android.restaurantlistings.util.RestaurantSharedPreference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Piyush Garg
@@ -23,6 +26,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<RestaurantResult> restaurantResults = new ArrayList<>();
     private Context context;
+    Set<String> set = new HashSet<>();
 
     public void setRestaurantResults(ArrayList<RestaurantResult> restaurantResults ){
         this.restaurantResults = restaurantResults;
@@ -33,6 +37,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_layout,
             parent, false);
+        set = RestaurantSharedPreference.getData(parent.getContext());
         context = parent.getContext();
         return new ListItemViewHolder(view,context,restaurantResults);
     }
@@ -43,6 +48,14 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         String description = restaurantResults.get(position).getRestaurantDescription();
         String status = restaurantResults.get(position).getRestaurantStatus();
         String image_url = restaurantResults.get(position).getRestaurantCoverImage();
+        if (!set.isEmpty()){
+        if (set.contains(restaurantResults.get(position).getRestaurantId()))
+            ((ListItemViewHolder)viewHolder).button
+                    .setBackgroundColor(context.getColor(R.color.colorPrimary));
+        else
+            ((ListItemViewHolder)viewHolder).button
+                    .setBackgroundColor(context.getColor(R.color.colorBlack));
+        }
         ((ListItemViewHolder)viewHolder).name.setText(title);
         ((ListItemViewHolder)viewHolder).cuisine.setText(description);
         if (status.equals("Pre-order for Pre-order")){
